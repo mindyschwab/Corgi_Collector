@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Corgi List</h1>
+
+{% for corgi in corgis %}
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">{{ corgi.name }}</span>
+      <p>Breed: {{ corgi.breed }}</p>
+      <p>Description: {{ corgi.description }}</p>
+      {% if corgi.age > 0 %}
+        <p>Age: {{ corgi.age }}</p>
+      {% else %}
+        <p>Age: Puppy</p>
+      {% endif %}
+    </div>
+  </div>
+{% endfor %}
+
+{% endblock %}
