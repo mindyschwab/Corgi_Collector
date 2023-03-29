@@ -5,23 +5,62 @@
 <button class="waves-effect waves-light btn-small teal lighten-3"><a class="white-text" href="{% url 'index' %}">
         < Back to Corgi List </a></button>
 <h1>Corgi Details</h1>
-
-<div class="card">
-    <div class="card-content">
-        <span class="card-title">{{ corgi.name }}</span>
-        <p>Breed: {{ corgi.breed }}</p>
-        <p>Description: {{ corgi.description|linebreaks }}</p>
-        {% if corgi.age > 0 %}
-        <p>Age: {{ corgi.age }}</p>
-        {% else %}
-        <p>Age: Just a baby</p>
-        {% endif %}
+<div class="row">
+    <div class="col s6">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">{{ corgi.name }}</span>
+                <p>Breed: {{ corgi.breed }}</p>
+                <p>Description: {{ corgi.description|linebreaks }}</p>
+                {% if corgi.age > 0 %}
+                <p>Age: {{ corgi.age }}</p>
+                {% else %}
+                <p>Age: Just a baby</p>
+                {% endif %}
+            </div>
+            <div class="card-action">
+                <a href="{% url 'corgis_update' corgi.id %}">Edit</a>
+                <a href="{% url 'corgis_delete' corgi.id %}">Delete</a>
+            </div>
+        </div>
     </div>
-    <div class="card-action">
-        <a href="{% url 'corgis_update' corgi.id %}">Edit</a>
-        <a href="{% url 'corgis_delete' corgi.id %}">Delete</a>
+
+    <div class="col s6">
+        <form action="{% url 'add_feeding' corgi.id %}" method="POST">
+            {% csrf_token %}
+            <!-- Render the inputs -->
+            {{ feeding_form.as_p }}
+            <input type="submit" class="btn teal lighten-3" value="Add Feeding">
+        </form>
+        <table class="striped">
+        <thead>
+            <tr><th>Date</th><th>Meal</th></tr>
+        </thead>
+        <tbody>
+            {% for feeding in corgi.feeding_set.all %}
+            <tr>
+                <td>{{feeding.date}}</td>
+                <td>{{feeding.get_meal_display}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
     </div>
 </div>
 
+<script>
+  const dateEl = document.getElementById('id_date');
+  // M is Materialize's global variable
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  });  
+
+    // add additional JS to initialize select below
+  const selectEl = document.getElementById('id_meal');
+  M.FormSelect.init(selectEl);
+</script>
 
 {% endblock %}

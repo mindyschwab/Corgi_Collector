@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Corgi
+from .forms import FeedingForm
 
 # Create your views here.
 
@@ -22,8 +23,9 @@ def corgis_index(request):
 
 def corgis_detail(request, corgi_id):
     corgi = Corgi.objects.get(id=corgi_id)
+    feeding_form = FeedingForm()
     return render(request, 'corgis/detail.html', {
-        'corgi': corgi
+        'corgi': corgi, 'feeding_form': feeding_form
     })
 
 
@@ -40,3 +42,16 @@ class CorgiUpdate(UpdateView):
 class CorgiDelete(DeleteView):
     model = Corgi
     success_url = '/corgis/'
+
+
+def add_feeding(request, corgi_id):
+    # create a ModelForm instance using the data in request.POST
+    form = FeedingForm(request.POST)
+    # validate the form
+    if form.is_valid():
+        # don't save the form to the db until it
+        # has the corgi_id assigned
+        new_feeding = form.save(commit=False)
+        new_feeding.corgi_id = corgi_id
+        new_feeding.save()
+    return redirect('detail', corgi_id=corgi_id)
