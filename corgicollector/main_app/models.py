@@ -4,7 +4,6 @@ from datetime import date
 
 MEALS = (
     ('M', 'Morning'),
-    ('A', 'Afternoon'),
     ('E', 'Evening')
 )
 # Create your models here.
