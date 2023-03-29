@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Corgi
 
 # Create your views here.
@@ -24,3 +25,18 @@ def corgis_detail(request, corgi_id):
     return render(request, 'corgis/detail.html', {
         'corgi': corgi
     })
+
+
+class CorgiCreate(CreateView):
+    model = Corgi
+    fields = '__all__'
+
+
+class CorgiUpdate(UpdateView):
+    model = Corgi
+    fields = ['breed', 'description', 'age']
+
+
+class CorgiDelete(DeleteView):
+    model = Corgi
+    success_url = '/corgis/'

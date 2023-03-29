@@ -17,6 +17,10 @@
         <p>Age: Just a baby</p>
         {% endif %}
     </div>
+    <div class="card-action">
+        <a href="{% url 'corgis_update' corgi.id %}">Edit</a>
+        <a href="{% url 'corgis_delete' corgi.id %}">Delete</a>
+    </div>
 </div>
 
 
