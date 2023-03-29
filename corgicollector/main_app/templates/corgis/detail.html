@@ -32,6 +32,14 @@
             {{ feeding_form.as_p }}
             <input type="submit" class="btn teal lighten-3" value="Add Feeding">
         </form>
+        
+        <br>
+        {% if corgi.fed_for_today %}
+            <div class="card-panel teal-text center-align">{{corgi.name}} been fed all meals for today</div>
+        {% else %}
+            <div class="card-panel red-text center-align">{{corgi.name}} might be hungry</div>
+        {% endif %}
+
         <table class="striped">
         <thead>
             <tr><th>Date</th><th>Meal</th></tr>
