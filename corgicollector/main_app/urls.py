@@ -14,6 +14,8 @@ urlpatterns = [
          views.CorgiDelete.as_view(), name='corgis_delete'),
     path('corgis/<int:corgi_id>/add_feeding/',
          views.add_feeding, name='add_feeding'),
+    path('corgis/<int:corgi_id>/add_photo/',
+         views.add_photo, name='add_photo'),
     path('corgis/<int:corgi_id>/assoc_toy/<int:toy_id>/',
          views.assoc_toy, name='assoc_toy'),
     path('corgis/<int:corgi_id>/remove_toy/<int:toy_id>/',

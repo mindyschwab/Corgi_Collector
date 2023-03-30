@@ -56,3 +56,11 @@ class Feeding(models.Model):
 
     class Meta:
         ordering = ['-date']
+
+
+class Photo(models.Model):
+    url = models.CharField(max_length=200)
+    corgi = models.ForeignKey(Corgi, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Photo for corgi_id: {self.corgi_id} @{self.url}"
