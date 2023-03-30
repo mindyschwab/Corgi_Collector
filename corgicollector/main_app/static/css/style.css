@@ -19,3 +19,13 @@ footer.page-footer {
     /* background-color: red; */
     /* background-color: blue; */
 }
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #00897b;
+}
