@@ -78,7 +78,7 @@ class ToyCreate(CreateView):
 
 class ToyUpdate(UpdateView):
     model = Toy
-    fields = ['name', 'color']
+    fields = ['name', 'color', 'description']
 
 
 class ToyDelete(DeleteView):
