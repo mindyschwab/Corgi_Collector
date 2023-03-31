@@ -6,6 +6,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Corgi, Toy, Photo
 from .forms import FeedingForm
 
@@ -20,13 +22,15 @@ def about(request):
     return render(request, 'about.html')
 
 
+@login_required
 def corgis_index(request):
-    corgis = Corgi.objects.all()
+    corgis = Corgi.objects.filter(user=request.user)
     return render(request, 'corgis/index.html', {
         'corgis': corgis
     })
 
 
+@login_required
 def corgis_detail(request, corgi_id):
     corgi = Corgi.objects.get(id=corgi_id)
     # creating a list of theids of all the toys that are associated with the corgi
@@ -40,7 +44,7 @@ def corgis_detail(request, corgi_id):
     })
 
 
-class CorgiCreate(CreateView):
+class CorgiCreate(LoginRequiredMixin, CreateView):
     model = Corgi
     fields = ['name', 'breed', 'description', 'age']
 
@@ -49,16 +53,17 @@ class CorgiCreate(CreateView):
         return super().form_valid(form)
 
 
-class CorgiUpdate(UpdateView):
+class CorgiUpdate(LoginRequiredMixin, UpdateView):
     model = Corgi
     fields = ['breed', 'description', 'age']
 
 
-class CorgiDelete(DeleteView):
+class CorgiDelete(LoginRequiredMixin, DeleteView):
     model = Corgi
     success_url = '/corgis/'
 
 
+@login_required
 def add_feeding(request, corgi_id):
     # create a ModelForm instance using the data in request.POST
     form = FeedingForm(request.POST)
@@ -72,39 +77,42 @@ def add_feeding(request, corgi_id):
     return redirect('detail', corgi_id=corgi_id)
 
 
-class ToyList(ListView):
+class ToyList(LoginRequiredMixin, ListView):
     model = Toy
 
 
-class ToyDetail(DetailView):
+class ToyDetail(LoginRequiredMixin, DetailView):
     model = Toy
 
 
-class ToyCreate(CreateView):
+class ToyCreate(LoginRequiredMixin, CreateView):
     model = Toy
     fields = '__all__'
 
 
-class ToyUpdate(UpdateView):
+class ToyUpdate(LoginRequiredMixin, UpdateView):
     model = Toy
     fields = ['name', 'color', 'description']
 
 
-class ToyDelete(DeleteView):
+class ToyDelete(LoginRequiredMixin, DeleteView):
     model = Toy
     success_url = '/toys/'
 
 
+@login_required
 def assoc_toy(request, corgi_id, toy_id):
     Corgi.objects.get(id=corgi_id).toys.add(toy_id)
     return redirect('detail', corgi_id=corgi_id)
 
 
+@login_required
 def remove_toy(request, corgi_id, toy_id):
     Corgi.objects.get(id=corgi_id).toys.remove(toy_id)
     return redirect('detail', corgi_id=corgi_id)
 
 
+@login_required
 def add_photo(request, corgi_id):
     # photo-file will be the "name" attribute on the <input type="file">
     photo_file = request.FILES.get('photo-file', None)
