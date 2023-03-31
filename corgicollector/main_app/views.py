@@ -4,6 +4,8 @@ import boto3
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 from .models import Corgi, Toy, Photo
 from .forms import FeedingForm
 
@@ -41,6 +43,10 @@ def corgis_detail(request, corgi_id):
 class CorgiCreate(CreateView):
     model = Corgi
     fields = ['name', 'breed', 'description', 'age']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class CorgiUpdate(UpdateView):
@@ -119,3 +125,19 @@ def add_photo(request, corgi_id):
             print('An error occurred uploading file to S3')
             print(e)
     return redirect('detail', corgi_id=corgi_id)
+
+
+def signup(request):
+    error_message = ''
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # automaitcally log the user in after signing up
+            login(request, user)
+            return redirect('index')
+        else:
+            error_message = 'Invalid sign up - please try again'
+    form = UserCreationForm()
+    context = {'form': form, 'error_message': error_message}
+    return render(request, 'registration/signup.html', context)
