@@ -29,20 +29,31 @@
                 </ul>
                 <ul class="right hide-on-med-and-down">
                     <li><a href="{% url 'about' %}">About</a></li>
+                    {% if user.is_authenticated %}
                     <li><a href="{% url 'corgis_create' %}">Add a Corgi</a></li>
                     <li><a href="{% url 'index' %}">View All My Corgis</a></li>
                     <li><a href="{% url 'toys_create' %}">Add a Toy</a></li>
                     <li><a href="{% url 'toys_index' %}">View All Toys</a></li>
+                    <li><a href="{% url 'logout' %}">Log Out</a></li>
+                    {% else %}
+
+                    <li><a href="{% url 'login' %}">Log In</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
     </header>
     <ul class="sidenav" id="mobile-size">
         <li><a href="{% url 'about' %}">About</a></li>
-        <li><a href="{% url 'corgis_create' %}">Add a Corgi</a></li>
-        <li><a href="{% url 'index' %}">View All My Corgis</a></li>
-        <li><a href="{% url 'toys_create' %}">Add a Toy</a></li>
-        <li><a href="{% url 'toys_index' %}">View All Toys</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'corgis_create' %}">Add a Corgi</a></li>
+                <li><a href="{% url 'index' %}">View All My Corgis</a></li>
+                <li><a href="{% url 'toys_create' %}">Add a Toy</a></li>
+                <li><a href="{% url 'toys_index' %}">View All Toys</a></li>
+                <li><a href="{% url 'logout' %}">Log Out</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Log In</a></li>
+            {% endif %}
     </ul>
     <main class="container">
         <!-- these block and endblock tags are where we will be able to enter other content when we extend this template -->
