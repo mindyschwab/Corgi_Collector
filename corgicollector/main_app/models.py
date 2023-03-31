@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from datetime import date
+from django.contrib.auth.models import User
 
 MEALS = (
     ('M', 'Morning'),
@@ -28,6 +29,7 @@ class Corgi(models.Model):
     age = models.IntegerField()
     # Adding many to many relationship with toys
     toys = models.ManyToManyField(Toy)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 # changing this instance method doesn't impact the database
 # therefore, we don't need to run makemigrations or migrate
