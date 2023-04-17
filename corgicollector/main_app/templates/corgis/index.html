@@ -2,7 +2,7 @@
 {% block content %}
 
 <h1>Corgi List</h1>
-
+<p>Click Add a corgi to add a new Corgi to your collection.</p>
 {% for corgi in corgis %}
 <a href="{% url 'detail' corgi.id %}">
   <div class="card">
