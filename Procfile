@@ -1,1 +1,1 @@
-web: (cd corgicollector && gunicorn corgicollector.wsgi)
+web: gunicorn corgicollector.wsgi
