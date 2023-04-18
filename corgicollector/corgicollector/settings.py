@@ -9,10 +9,10 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 import environ
-import os
+
 
 environ.Env()
 environ.Env.read_env()
@@ -82,7 +82,11 @@ WSGI_APPLICATION = 'corgicollector.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'corgicollector',
+        'NAME': 'mindyschwab/corgicollector',
+        'USER': 'mindyschwab',
+        'PASSWORD':os.environ['DB_PASSWORD'],
+        'HOST': 'db.bit.io',
+        'PORT': '5432',
     }
 }
 
